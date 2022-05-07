@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=`device-width`, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #pict
+        {
+            position: absolute;
+        }
+    </style>
+</head>
+<body>
+    <img id="pict" src="https://avatarko.ru/img/kartinka/22/igra_ogon_Mario_21742.jpg" width="100" height="100" alt="">
+    <script>
+        let arr_cord = [];
+        let speed = 5
+        let pict = document.getElementById("pict");
+        function moveTo(obj, to)
+        {
+            if(obj.style.position == "absolute")
+            {
+                obj.style.position = "absolute";
+                let coords = getCoords(obj);
+                baseX = parseInt(coords.left,10);
+                baseY = parseInt(coords.bottom, 10);
+                X = parseInt(to[0])
+                Y = parseInt(to[1])
+                console.log(X < baseX && Y == baseY)
+                if(X > baseX && Y == baseY)
+                {
+                    requestAnimationFrame(function()
+                    {
+                        moveleft(obj, to,  X - baseX);
+                    });
+                }
+                else if(X < baseX && Y == baseY)
+                {
+                    window.requestAnimationFrame(function()
+                    {
+                        moveRight(obj, to , X - baseX);
+                    });
+                }
+                else if(X > baseX && Y > baseY)
+                {
+
+                }
+            }
+            else
+            {
+                obj.style.position = "absolute";
+                let coords = getCoords(obj);
+                baseX = parseInt(coords.left,10);
+                baseY = parseInt(coords.bottom, 10);
+                X = parseInt(to[0])
+                Y = parseInt(to[1])
+                console.log(X < baseX && Y == baseY)
+                if(X > baseX && Y == baseY)
+                {
+                    window.requestAnimationFrame(function()
+                    {
+                        moveleft(obj, to,  X - baseX);
+                    });
+                }
+                else if(X < baseX && Y == baseY)
+                {
+                    window.requestAnimationFrame(function()
+                    {
+                        moveRight(obj, to , X - baseX);
+                    });
+                }
+                else if(X > baseX && Y > baseY)
+                {
+                    window.requestAnimationFrame(function()
+                    {
+                        movebot_left(obj, to , X - baseX);
+                    });
+                }
+
+            }
+
+        }
+        function getCoords(elem)
+        {
+        let box = elem.getBoundingClientRect();
+        return {
+            top: box.top + window.pageYOffset,
+            right: box.right + window.pageXOffset,
+            bottom: box.bottom + window.pageYOffset,
+            left: box.left + window.pageXOffset
+        };
+        }
+
+        function movebot_left(obj, to,  x)
+        {
+            var pict = obj
+            let left = parseInt(pict.style.left, 10)
+            let right = parseInt(pict.style.right, 10)
+            let top = parseInt(pict.style.top, 10)
+            if (pict.style.left && pict.style.top)
+            {
+                
+                pict.style.left = (parseInt(pict.style.left, 10) + speed) + "px";
+                pict.style.top = (parseInt(pict.style.top, 10) + speed) + "px";
+
+
+                if (parseInt(pict.style.left, 10) < to[0] && parseInt(pict.style.top, 10) < to[1]) {
+                    arr_cord.push([parseInt(pict.style.left, 10), parseInt(pict.style.top, 10)]) //x y
+                    window.requestAnimationFrame(function()
+                    {
+                        moveTo(obj, to);
+                    });
+                }
+                else
+                {
+                    console.log(arr_cord);
+                }
+            }
+            else
+            {
+                pict.style.left = 0 + "px";
+                if (parseInt(pict.style.left, 10) < to[0]) {
+                    arr_cord.push([parseInt(pict.style.left, 10), 0])
+                    window.requestAnimationFrame(function()
+                    {
+                        moveTo(obj, to)
+                    });
+                }
+            }
+        }
+
+        function moveleft(obj, to,  x)
+        {
+            var pict = obj
+            let left = parseInt(pict.style.left, 10)
+            let right = parseInt(pict.style.right, 10)
+            if (pict.style.left)
+            {
+                pict.style.left = (parseInt(pict.style.left, 10) + speed) + "px";
+                if (parseInt(pict.style.left, 10) < to[0]) {
+                    arr_cord.push([parseInt(pict.style.left, 10), 0]) //x y
+                    window.requestAnimationFrame(function()
+                    {
+                        moveTo(obj, to);
+                    });
+                }
+                else
+                {
+                    console.log(arr_cord);
+                }
+            }
+            else
+            {
+                pict.style.left = 0 + "px";
+                if (parseInt(pict.style.left, 10) < to[0]) {
+                    arr_cord.push([parseInt(pict.style.left, 10), 0])
+                    window.requestAnimationFrame(function()
+                    {
+                        moveTo(obj, to)
+                    });
+                }
+            }
+        }
+
+
+        function moveRight(obj, to,  x)
+        {
+            console.log("MoveR")
+            var pict = obj;
+            let left = parseInt(pict.style.left, 10)
+            let right = parseInt(pict.style.right, 10)
+            let bord = window.screen.width - pict.width
+            if (pict.style.right)
+            {
+                if(pict.style.left)
+                {
+                    pict.style.left = (parseInt(pict.style.left, 10) - speed) + "px";
+                    if (parseInt(pict.style.left, 10) > to[0]) {
+                        arr_cord.push([parseInt(pict.style.left, 10), 0]) //x y
+                        window.requestAnimationFrame(function()
+                        {
+                            moveTo(obj, to);
+                        });
+                    }
+                    else
+                    {
+                        console.log(arr_cord);
+                    }
+                }
+                else
+                {
+                    pict.style.right = (parseInt(pict.style.right, 10) + speed) + "px";
+                    if (parseInt(pict.style.right, 10) < to[0]) {
+                        arr_cord.push([parseInt(pict.style.right, 10), 0]) //x y
+                        window.requestAnimationFrame(function()
+                        {
+                            moveTo(obj, to);
+                        });
+                }
+                else
+                {
+                    console.log(arr_cord);
+                }
+                }
+            }
+            else
+            {
+                pict.style.right = 0 + "px";
+                if(pict.style.left)
+                {
+                    pict.style.left = (parseInt(pict.style.left, 10) - speed) + "px";
+                    if (parseInt(pict.style.left, 10) > to[0]) {
+                        arr_cord.push([parseInt(pict.style.left, 10), 0]) //x y
+                        window.requestAnimationFrame(function()
+                        {
+                            moveTo(obj, to);
+                        });
+                    }
+                    else
+                    {
+                        console.log(arr_cord);
+                    }
+                }
+                else
+                {
+                    if (parseInt(pict.style.right, 10) < to[0]) {
+                        arr_cord.push([parseInt(pict.style.right, 10), 0])
+                        window.requestAnimationFrame(function()
+                        {
+                            moveTo(obj, to);
+                        });
+                    }
+                }
+
+            }
+        }
+
+        function moveTop(obj, to,  y)
+        {
+            var pict = obj;
+            let top = parseInt(pict.style.top, 10)
+            let bottom = parseInt(pict.style.bottom, 10)
+            let bord = window.screen.height - pict.height
+            if (pict.style.top)
+            {
+                if(pict.style.bottom)
+                {
+                    pict.style.bottom = (parseInt(pict.style.bottom, 10) - speed) + "px";
+                    if (parseInt(pict.style.bottom, 10) > to[1]) {
+                        arr_cord.push([parseInt(pict.style.bottom, 10), 0]) //x y
+                        window.requestAnimationFrame(function()
+                        {
+                            moveTo(obj, to);
+                        });
+                }
+                else
+                {
+                    console.log(arr_cord);
+                }
+                }
+                else
+                {
+                    pict.style.top = (parseInt(pict.style.top, 10) + speed) + "px";
+                    if (parseInt(pict.style.top, 10) < to[1]) {
+                        arr_cord.push([parseInt(pict.style.top, 10), 0]) //x y
+                        window.requestAnimationFrame(function()
+                        {
+                            moveTo(obj, to);
+                        });
+                }
+                else
+                {
+                    console.log(arr_cord);
+                }
+                }
+            }
+            else
+            {
+                if (pict.style.bottom)
+                {
+                    pict.style.bottom = (parseInt(pict.style.bottom, 10) - speed) + "px";
+                    if (parseInt(pict.style.bottom, 10) > to[1]) {
+                        arr_cord.push([parseInt(pict.style.bottom, 10), 0]) //x y
+                        window.requestAnimationFrame(function()
+                        {
+                            moveTo(obj, to);
+                        });
+                }
+                else
+                {
+                    pict.style.top = 0 + "px";
+                    if (parseInt(pict.style.top, 10) < to[1]) {
+                        arr_cord.push([parseInt(pict.style.top, 10), 0])
+                        window.requestAnimationFrame(function()
+                        {
+                            moveTo(obj, to);
+                        });
+                    }
+                }
+
+            }
+            }
+        }
+
+        function moveBottom(obj, to,  y)
+        {
+            var pict = obj;
+
+            let top = parseInt(pict.style.top, 10)
+            let bottom = parseInt(pict.style.bottom, 10)
+            let bord = window.screen.height - pict.height
+            if (pict.style.bottom)
+            {
+                if (pict.style.top)
+                {
+                    pict.style.top = (parseInt(pict.style.top, 10) - speed) + "px";
+                    if (parseInt(pict.style.top, 10) > to[1]) {
+                        arr_cord.push([parseInt(pict.style.top, 10), 0]) //x y
+                        window.requestAnimationFrame(function()
+                        {
+                            moveTo(obj, to);
+                        });
+                    }
+                    else
+                    {
+                        console.log(arr_cord);
+                    }
+                }
+                else
+                {
+                    pict.style.bottom = (parseInt(pict.style.bottom, 10) + speed) + "px";
+                    if (parseInt(pict.style.bottom, 10) < to[1]) {
+                        arr_cord.push([parseInt(pict.style.bottom, 10), 0]) //x y
+                        window.requestAnimationFrame(function()
+                        {
+                            moveTo(obj, to);
+                        });
+                    }
+                    else
+                    {
+                        console.log(arr_cord);
+                    }
+                }
+            }
+            else
+            {
+                if(pict.style.bottom)
+                {
+                    pict.style.top = (parseInt(pict.style.top, 10) - speed) + "px";
+                    if (parseInt(pict.style.top, 10) > to[1]) {
+                        arr_cord.push([parseInt(pict.style.top, 10), 0]) //x y
+                        window.requestAnimationFrame(function()
+                        {
+                            moveTo(obj, to);
+                        });
+                    }
+                    else
+                    {
+                        console.log(arr_cord);
+                    }
+                }
+                else
+                {
+                    pict.style.top = 0 + "px";
+                    if (parseInt(pict.style.bottom, 10) < to[1]) {
+                        arr_cord.push([parseInt(pict.style.bottom, 10), 0])
+                        window.requestAnimationFrame(function()
+                        {
+                            moveTo(obj, to);
+                        });
+                    }
+            }
+
+            }
+        }
+        pict.style.left = 300 + "px"
+        moveTo(pict, [100, 108])
+        //let leftID = window.requestAnimationFrame(moveleft);
+        //let RightID = window.requestAnimationFrame(moveRight);
+    </script>
+</body>
+</html>
